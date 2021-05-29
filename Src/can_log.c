@@ -1,11 +1,10 @@
 //Includes:
 #include <can.h>
 #include <IMU.h>
-#include "can_log.h"
+#include <can_log.h>
 #include <string.h>
 #include <main.h>
 #include <stdio.h>
-
 
 extern int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ;
 
@@ -20,6 +19,7 @@ void transmit_dados() {
 	vetTx[6] = 0;
 	vetTx[7] = 0;
 	CAN_Transmit(vetTx, 108);
+
 	vetTx[0] = gyroX;
 	vetTx[1] = gyroX >> 8;
 	vetTx[2] = gyroY;

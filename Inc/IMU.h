@@ -9,5 +9,6 @@ void recordAccelRegisters(void); //Funcao de leitura do Acelerometro
 void recordGyroRegisters(void); //funcao de leitura do Giroscopio
 //void temperatura(void); //desnecessario
 uint8_t Evita_travamento(uint32_t timer);
-
+void Pisca_SOS();
+uint8_t Checa_leitura();
 #define addressACEL 0x68
