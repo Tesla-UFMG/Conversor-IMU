@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -57,13 +57,12 @@
 
 /* External variables --------------------------------------------------------*/
 extern CAN_HandleTypeDef hcan;
-extern DMA_HandleTypeDef hdma_i2c1_rx;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
 
 /******************************************************************************/
-/*           Cortex-M3 Processor Interruption and Exception Handlers          */ 
+/*           Cortex-M3 Processor Interruption and Exception Handlers          */
 /******************************************************************************/
 /**
   * @brief This function handles Non maskable interrupt.
@@ -197,20 +196,6 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f1xx.s).                    */
 /******************************************************************************/
-
-/**
-  * @brief This function handles DMA1 channel7 global interrupt.
-  */
-void DMA1_Channel7_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Channel7_IRQn 0 */
-
-  /* USER CODE END DMA1_Channel7_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_i2c1_rx);
-  /* USER CODE BEGIN DMA1_Channel7_IRQn 1 */
-
-  /* USER CODE END DMA1_Channel7_IRQn 1 */
-}
 
 /**
   * @brief This function handles USB high priority or CAN TX interrupts.

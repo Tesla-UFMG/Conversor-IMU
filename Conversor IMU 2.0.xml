@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE targetDefinitions [
-<!ELEMENT targetDefinitions (board)>
-<!ELEMENT board (name,dbgIF+,dbgDEV,mcuId)>
-<!ELEMENT name (#PCDATA)>
-<!ELEMENT dbgIF (#PCDATA)>
-<!ELEMENT dbgDEV (#PCDATA)>
-<!ELEMENT mcuId (#PCDATA)>
-<!ATTLIST board id CDATA #REQUIRED>
+<!DOCTYPE targetDefinitions [ 
+	<!ELEMENT targetDefinitions (board)>
+	<!ELEMENT board (name, dbgIF+, dbgDEV, mcuId)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT dbgIF (#PCDATA)>
+	<!ELEMENT dbgDEV (#PCDATA)>
+	<!ELEMENT mcuId (#PCDATA)>
+	<!ATTLIST board id CDATA #REQUIRED>
 ]>
 <targetDefinitions>
-  <board id="Conversor IMU 2.0">
-    <name>Conversor IMU 2.0</name>
-    <dbgIF>SWD</dbgIF>
-    <dbgDEV>ST-Link</dbgDEV>
-    <mcuId>stm32f103c8tx</mcuId>
-  </board>
+	<board id="conversorimu_2.0">
+		<name>ConversorIMU_2.0</name>
+		<dbgIF>SWD</dbgIF>
+		<dbgDEV>ST-Link</dbgDEV>
+		<mcuId>stm32f103c8tx</mcuId>
+	</board>
 </targetDefinitions>
