@@ -107,6 +107,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	 recordAccelRegisters();
 	 recordGyroRegisters();
+	 CAN_Transmit();
+	 HAL_Delay(50);
 	 if(Checa_leitura()){
 		 Pisca_SOS();
 		 SetupACEL();

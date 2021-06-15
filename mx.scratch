@@ -3,15 +3,15 @@
   <FileVersion>3.0</FileVersion>
   <Workspace>
     <WorkspaceType>Single-project</WorkspaceType>
-    <WorkspacePath>C:\Users\Giovanni\Desktop\Tesla\i2ccan\ConversorIMU_2.0\</WorkspacePath>
+    <WorkspacePath>C:\Users\Giovanni\Desktop\Tesla\i2ccan\Nova pasta\Conversor-IMU\</WorkspacePath>
     <underRoot>true</underRoot>
     <TrustZone>0</TrustZone>
     <HAL_Driver>C:\Users\Giovanni\STM32Cube\Repository\STM32Cube_FW_F1_V1.8.3</HAL_Driver>
     <CMSIS>Drivers/CMSIS</CMSIS>
     <Toolchain>STM32CubeIDE</Toolchain>
-    <IocFile>ConversorIMU_2.0.ioc</IocFile>
+    <IocFile>Conversor IMU 2.0.ioc</IocFile>
     <Project>
-      <ProjectName>ConversorIMU_2.0</ProjectName>
+      <ProjectName>Conversor IMU 2.0</ProjectName>
       <ProjectNature>C</ProjectNature>
       <Secure/>
       <filestoremove/>
@@ -20,7 +20,7 @@
       </sourceEntriesToRemove>
       <configs>
         <config>
-          <name>ConversorIMU_2.0</name>
+          <name>Conversor IMU 2.0</name>
           <mainSourceRepo>Src</mainSourceRepo>
           <sourceStructure>Basic</sourceStructure>
           <device>STM32F103C8Tx</device>
