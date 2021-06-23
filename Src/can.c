@@ -30,9 +30,11 @@ void CAN_Transmit()
 	TxGyro[0] = gyroX;
 	TxGyro[1] = gyroY;
 	TxGyro[2] = gyroZ;
+	TxGyro[3] = _accel_ok;
 	TxAccel[0] = accelX;
 	TxAccel[1] = accelY;
 	TxAccel[2] = accelZ;
+	TxAccel[3] = _accel_ok;
 	TxHeader.StdId = 0x123;
 	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxGyro, &TxMailbox) == HAL_OK)
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
