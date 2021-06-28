@@ -40,7 +40,7 @@ void CAN_Transmit()
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 	HAL_Delay(20);
 	TxHeader.StdId = 0x124;
-	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, vet, &TxMailbox) == HAL_OK)
+	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxAccel, &TxMailbox) == HAL_OK)
 			HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 }
 /* USER CODE END 0 */
