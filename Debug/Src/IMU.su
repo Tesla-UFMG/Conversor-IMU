@@ -1,5 +1,5 @@
 IMU.c:95:9:Evita_travamento	8	static
-IMU.c:9:6:SetupACEL	24	static
+IMU.c:8:6:SetupACEL	24	static
 IMU.c:42:6:recordAccelRegisters	24	static
 IMU.c:63:6:recordGyroRegisters	16	static
 IMU.c:106:6:Pisca_SOS	8	static

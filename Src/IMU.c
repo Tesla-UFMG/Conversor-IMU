@@ -1,12 +1,12 @@
 #include <IMU.h>
-#include <string.h>
+
 I2C_HandleTypeDef hi2c1; //handle do i2c;
 uint8_t buffer[6] = { 0 };
-int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ, temp;
-uint8_t _accel_ok = 1;
+
 uint32_t timer = 0, timer1;
 //uint16_t MemAdd = 0x6B;
 void SetupACEL(void) {
+	_accel_ok = 1;
 	uint16_t MemAdd = 0x6B;
 	buffer[0] = 0;
 	timer = HAL_GetTick();
@@ -36,11 +36,11 @@ void SetupACEL(void) {
 	gyroX = 0;
 	gyroY = 0;
 	gyroZ = 0;
-	_accel_ok = 1;
+	_accel_ok = 0;
 }
 
 void recordAccelRegisters() {
-	_accel_ok = 1;
+
 	buffer[0] = 0x3B;
 	timer = HAL_GetTick();
 	while (HAL_I2C_Master_Transmit(&hi2c1, (addressACEL << 1), buffer, 1, 100)
@@ -61,7 +61,7 @@ void recordAccelRegisters() {
 }
 
 void recordGyroRegisters(void) {
-	_accel_ok = 1;
+
 	buffer[0] = 0x43;
 	timer = HAL_GetTick();
 	while (HAL_I2C_Master_Transmit(&hi2c1, (uint16_t) addressACEL << 1, buffer, 1, 100) != HAL_OK && Evita_travamento(timer));
@@ -92,12 +92,12 @@ void recordGyroRegisters(void) {
 	temp = temp / 340 + (int16_t) 36.53;
 }*/
 
-uint8_t Evita_travamento(uint32_t timer) {
+uint8_t Evita_travamento(uint32_t timer) {//verifica se houve timeout no i2c
 	uint32_t timer2 = HAL_GetTick();
 	if ((timer2 - timer) < 50)
 		return 1;
 	else {
-		_accel_ok = 0;
+		_accel_ok = 1;
 		return 0;
 	}
 
@@ -148,8 +148,8 @@ void Pisca_SOS(){ //Caso haja falha na conexão do IMU com a placa, o LED_DEBUG 
 }
 
 
-uint8_t Checa_leitura() {
-	return !_accel_ok;
+uint8_t Checa_leitura() {//se houver timeout no i2c essa função sinaliza
+	return _accel_ok;
 
 
 }

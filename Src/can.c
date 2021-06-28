@@ -21,10 +21,27 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-void CAN_Transmit(uint8_t *vet, uint32_t id)
+#include "IMU.h"
+
+
+void CAN_Transmit()
 {
-	TxHeader.StdId = id;
-	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, vet, &TxMailbox) == HAL_OK);
+	uint8_t vet[8] = {0,0,0,0,0,0,0,0};
+	TxGyro[0] = gyroX;
+	TxGyro[1] = gyroY;
+	TxGyro[2] = gyroZ;
+	TxGyro[3] = _accel_ok;
+	TxAccel[0] = accelX;
+	TxAccel[1] = accelY;
+	TxAccel[2] = accelZ;
+	TxAccel[3] = _accel_ok;
+	TxHeader.StdId = 0x123;
+	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxGyro, &TxMailbox) == HAL_OK)
+		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
+	HAL_Delay(20);
+	TxHeader.StdId = 0x124;
+	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxAccel, &TxMailbox) == HAL_OK)
+			HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 }
 /* USER CODE END 0 */
 
@@ -58,7 +75,21 @@ void MX_CAN_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN_Init 2 */
-
+  if (HAL_CAN_Start(&hcan) != HAL_OK)
+  {
+	  /* Start Error */
+	  Error_Handler();
+  }
+  if (HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY) != HAL_OK)
+  {
+	  /* Notification Error */
+	  Error_Handler();
+  }
+  TxHeader.ExtId = 0x01;
+  TxHeader.RTR = CAN_RTR_DATA;
+  TxHeader.IDE = CAN_ID_STD;
+  TxHeader.DLC = 8;
+  TxHeader.TransmitGlobalTime = DISABLE;
   /* USER CODE END CAN_Init 2 */
 
 }

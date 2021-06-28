@@ -1,4 +1,4 @@
-can.c:24:6:CAN_Transmit	8	static
-can.c:34:6:MX_CAN_Init	8	static
-can.c:66:6:HAL_CAN_MspInit	40	static
-can.c:104:6:HAL_CAN_MspDeInit	8	static
+can.c:27:6:CAN_Transmit	8	static
+can.c:51:6:MX_CAN_Init	8	static
+can.c:97:6:HAL_CAN_MspInit	40	static
+can.c:135:6:HAL_CAN_MspDeInit	8	static

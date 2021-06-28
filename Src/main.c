@@ -58,7 +58,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t vetTx[8] = {0};
+
 
 /* USER CODE END 0 */
 
@@ -95,6 +95,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_Delay(500);
+
   SetupACEL();
   /* USER CODE END 2 */
 
@@ -107,6 +108,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	 recordAccelRegisters();
 	 recordGyroRegisters();
+	 CAN_Transmit();
+	 HAL_Delay(50);
 	 if(Checa_leitura()){
 		 Pisca_SOS();
 		 SetupACEL();

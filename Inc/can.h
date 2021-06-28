@@ -31,9 +31,13 @@ extern "C" {
  CAN_FilterTypeDef sFilterConfig;
  CAN_TxHeaderTypeDef TxHeader;
  CAN_RxHeaderTypeDef RxHeader;
- uint8_t TxData[8];
+ int16_t TxGyro[8];
+ int16_t TxAccel[8];
  uint8_t RxData[8];
  uint32_t TxMailbox;
+
+
+
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan;
