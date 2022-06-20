@@ -26,22 +26,29 @@
  CAN_FilterTypeDef sFilterConfig;
  CAN_TxHeaderTypeDef TxHeader;
  CAN_RxHeaderTypeDef RxHeader;
- int16_t TxGyro[8];
- int16_t TxAccel[8];
+ uint8_t TxGyro[8];
+ uint8_t TxAccel[8];
  uint8_t RxData[8];
  uint32_t TxMailbox;
 
 void CAN_Transmit()
 {
-	uint8_t vet[8] = {0,0,0,0,0,0,0,0};
-	TxGyro[0] = gyroX;
-	TxGyro[1] = gyroY;
-	TxGyro[2] = gyroZ;
-	TxGyro[3] = _accel_ok;
-	TxAccel[0] = accelX;
-	TxAccel[1] = accelY;
-	TxAccel[2] = accelZ;
-	TxAccel[3] = _accel_ok;
+	TxGyro[0] = (uint8_t)(gyroX << 8);
+    TxGyro[1] = (uint8_t)(gyroX >> 8);
+	TxGyro[2] = (uint8_t)(gyroY << 8);
+    TxGyro[3] = (uint8_t)(gyroY >> 8);
+	TxGyro[4] = (uint8_t)(gyroZ << 8);
+    TxGyro[5] = (uint8_t)(gyroZ >> 8);
+	TxGyro[6] = _accel_ok;
+
+	TxAccel[0] = (uint8_t) (accelX << 8);
+	TxAccel[1] = (uint8_t)(accelX >> 8);
+	TxAccel[2] = (uint8_t)(accelY << 8);
+    TxAccel[3] = (uint8_t)(accelY >> 8);
+    TxAccel[4] = (uint8_t)(accelZ << 8);
+    TxAccel[5] = (uint8_t)(accelZ >> 8);
+	TxAccel[6] = _accel_ok;
+
 	TxHeader.StdId = 0x123;
 	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxGyro, &TxMailbox) == HAL_OK)
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
