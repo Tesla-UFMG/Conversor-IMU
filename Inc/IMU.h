@@ -8,8 +8,8 @@
 #include "i2c.h"
 #include "gpio.h"
 
-uint8_t _accel_ok;
-int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ, temp;
+extern uint8_t _accel_ok;
+extern int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ, temp;
 void SetupACEL(void); //Funcao de inicializacao do MPU
 void recordAccelRegisters(void); //Funcao de leitura do Acelerometro
 void recordGyroRegisters(void); //funcao de leitura do Giroscopio

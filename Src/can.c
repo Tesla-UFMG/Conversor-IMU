@@ -23,6 +23,13 @@
 /* USER CODE BEGIN 0 */
 #include "IMU.h"
 
+ CAN_FilterTypeDef sFilterConfig;
+ CAN_TxHeaderTypeDef TxHeader;
+ CAN_RxHeaderTypeDef RxHeader;
+ int16_t TxGyro[8];
+ int16_t TxAccel[8];
+ uint8_t RxData[8];
+ uint32_t TxMailbox;
 
 void CAN_Transmit()
 {
