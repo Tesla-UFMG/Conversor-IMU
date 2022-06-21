@@ -33,21 +33,21 @@
 
 void CAN_Transmit()
 {
-	TxGyro[0] = (uint8_t)(gyroX << 8);
+    TxGyro[0] = (uint8_t)(gyroX << 8);
     TxGyro[1] = (uint8_t)(gyroX >> 8);
-	TxGyro[2] = (uint8_t)(gyroY << 8);
+    TxGyro[2] = (uint8_t)(gyroY << 8);
     TxGyro[3] = (uint8_t)(gyroY >> 8);
-	TxGyro[4] = (uint8_t)(gyroZ << 8);
+    TxGyro[4] = (uint8_t)(gyroZ << 8);
     TxGyro[5] = (uint8_t)(gyroZ >> 8);
-	TxGyro[6] = _accel_ok;
+    TxGyro[6] = _accel_ok;
 
-	TxAccel[0] = (uint8_t) (accelX << 8);
-	TxAccel[1] = (uint8_t)(accelX >> 8);
-	TxAccel[2] = (uint8_t)(accelY << 8);
+    TxAccel[0] = (uint8_t)(accelX << 8);
+    TxAccel[1] = (uint8_t)(accelX >> 8);
+    TxAccel[2] = (uint8_t)(accelY << 8);
     TxAccel[3] = (uint8_t)(accelY >> 8);
     TxAccel[4] = (uint8_t)(accelZ << 8);
     TxAccel[5] = (uint8_t)(accelZ >> 8);
-	TxAccel[6] = _accel_ok;
+    TxAccel[6] = _accel_ok;
 
 	TxHeader.StdId = 0x123;
 	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxGyro, &TxMailbox) == HAL_OK)
