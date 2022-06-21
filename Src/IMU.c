@@ -1,7 +1,10 @@
 #include <IMU.h>
+#include <i2c.h>
 
-I2C_HandleTypeDef hi2c1; //handle do i2c;
 uint8_t buffer[6] = { 0 };
+
+int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ, temp;
+uint8_t _accel_ok;
 
 uint32_t timer = 0, timer1;
 //uint16_t MemAdd = 0x6B;

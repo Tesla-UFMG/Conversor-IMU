@@ -28,15 +28,15 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
- CAN_FilterTypeDef sFilterConfig;
- CAN_TxHeaderTypeDef TxHeader;
- CAN_RxHeaderTypeDef RxHeader;
- int16_t TxGyro[8];
- int16_t TxAccel[8];
- uint8_t RxData[8];
- uint32_t TxMailbox;
+ extern CAN_FilterTypeDef sFilterConfig;
+ extern CAN_TxHeaderTypeDef TxHeader;
+ extern CAN_RxHeaderTypeDef RxHeader;
+ extern uint8_t TxGyro[8];
+ extern uint8_t TxAccel[8];
+ extern uint8_t RxData[8];
+ extern uint32_t TxMailbox;
 
-
+void CAN_Transmit();
 
 /* USER CODE END Includes */
 
