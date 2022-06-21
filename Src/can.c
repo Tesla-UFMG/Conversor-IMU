@@ -33,27 +33,29 @@
 
 void CAN_Transmit()
 {
-    TxGyro[0] = (uint8_t)(gyroX << 8);
+    TxGyro[0] = (uint8_t)(gyroX);
     TxGyro[1] = (uint8_t)(gyroX >> 8);
-    TxGyro[2] = (uint8_t)(gyroY << 8);
+    TxGyro[2] = (uint8_t)(gyroY);
     TxGyro[3] = (uint8_t)(gyroY >> 8);
-    TxGyro[4] = (uint8_t)(gyroZ << 8);
+    TxGyro[4] = (uint8_t)(gyroZ);
     TxGyro[5] = (uint8_t)(gyroZ >> 8);
     TxGyro[6] = _accel_ok;
+    TxGyro[7] = 0;
 
-    TxAccel[0] = (uint8_t)(accelX << 8);
+    TxAccel[0] = (uint8_t)(accelX);
     TxAccel[1] = (uint8_t)(accelX >> 8);
-    TxAccel[2] = (uint8_t)(accelY << 8);
+    TxAccel[2] = (uint8_t)(accelY);
     TxAccel[3] = (uint8_t)(accelY >> 8);
-    TxAccel[4] = (uint8_t)(accelZ << 8);
+    TxAccel[4] = (uint8_t)(accelZ);
     TxAccel[5] = (uint8_t)(accelZ >> 8);
     TxAccel[6] = _accel_ok;
+    TxAccel[7] = 0;
 
-	TxHeader.StdId = 0x123;
+	TxHeader.StdId = 131;
 	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxGyro, &TxMailbox) == HAL_OK)
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 	HAL_Delay(20);
-	TxHeader.StdId = 0x124;
+	TxHeader.StdId = 130;
 	if(HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxAccel, &TxMailbox) == HAL_OK)
 			HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 }
