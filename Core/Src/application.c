@@ -18,8 +18,6 @@ void application_initializer() {
 
     SetupACEL();
 }
-typedef enum { X = 0, Y, Z, STATUS } message_positions_e;
-typedef enum { IMU_ERROR = 0, IMU_OK } imu_status_e;
 
 void application_run() {
     accelerometer_t accelerometer = {0, 0, 0};
@@ -33,6 +31,7 @@ void application_run() {
     } else {
         accelerometer_transmit[STATUS] = IMU_OK;
     }
+    // todo: colocar id certo e define
     CAN_transmit(192, accelerometer_transmit);
 
     if (get_gyroscope_value(gyroscope) == HAL_OK) {
@@ -46,9 +45,10 @@ void application_run() {
     CAN_transmit(191, gyroscope_transmit);
 
     HAL_Delay(50);
-    
+
     if (accelerometer_transmit[STATUS] == IMU_ERROR
         || gyroscope_transmit[STATUS] == IMU_ERROR) {
+        // todo: refazer setup
         SetupACEL();
     }
 }
