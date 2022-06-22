@@ -1,23 +1,22 @@
 /*
- * CAN_Handler.c
+ * CAN_handler.c
  *
  *  Created on: Jun 21, 2022
  *      Author: iFeli
  */
 
-#include "stm32f1xx_hal.h"
+#include "CAN_handler.h"
 
 uint32_t TxMailbox;
 
 // Function to initialize CAN
 void CAN_handler_initialize(CAN_HandleTypeDef* hcan,
-                    void (*CAN_receive_callback)(CAN_HandleTypeDef* hcan),
-
-                    CAN_TxHeaderTypeDef* TxHeader) {
+                            void (*CAN_receive_callback)(CAN_HandleTypeDef* hcan),
+                            CAN_TxHeaderTypeDef* TxHeader) {
 
     if (HAL_CAN_ActivateNotification(hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK) {
         /* Notification Error */
-        //Error_Handler(); // NOLINT
+        // Error_Handler(); // NOLINT
     }
 
     // Function to register the custom CAN receive callback
@@ -25,12 +24,12 @@ void CAN_handler_initialize(CAN_HandleTypeDef* hcan,
                                  CAN_receive_callback)
         != HAL_OK) {
         /* Callback Register Error */
-        //Error_Handler(); // NOLINT
+        // Error_Handler(); // NOLINT
     }
 
     if (HAL_CAN_Start(hcan) != HAL_OK) {
         /* Start Error */
-        //Error_Handler(); // NOLINT
+        // Error_Handler(); // NOLINT
     }
 
     TxHeader->ExtId              = 0x01;
