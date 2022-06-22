@@ -71,17 +71,19 @@ int16_t calculate_accelerometer_gain(int16_t accelerometer_data) {
 }
 
 HAL_StatusTypeDef get_accelerometer_value(accelerometer_t accelerometer) {
-
+    HAL_StatusTypeDef status;
     timer = HAL_GetTick();
     // Inicializa a comunicacao com o registrador do acelerometro
-    while (MPU_6050_request_accelerometer() != HAL_OK && Evita_travamento(timer)) {
-        ;
+    status = MPU_6050_request_accelerometer();
+    if (status != HAL_OK) {
+        return status;
     }
 
     timer             = HAL_GetTick();
     uint8_t buffer[6] = {0};
-    while (MPU_6050_receive_accelerometer(buffer) != HAL_OK && Evita_travamento(timer)) {
-        ;
+    status            = MPU_6050_receive_accelerometer(buffer);
+    if (status != HAL_OK) {
+        return status;
     }
 
     accelerometer.x = calculate_accelerometer_gain((int16_t)(buffer[0] << 8 | buffer[1]))
@@ -99,16 +101,18 @@ int16_t calculate_gyroscope_gain(int16_t gyroscope_data) {
 }
 
 HAL_StatusTypeDef get_gyroscope_value(gyroscope_t gyroscope) {
-
-    timer = HAL_GetTick();
-    while (MPU_6050_request_gyroscope() != HAL_OK && Evita_travamento(timer)) {
-        ;
+    HAL_StatusTypeDef status;
+    timer  = HAL_GetTick();
+    status = MPU_6050_request_gyroscope();
+    if (status != HAL_OK) {
+        return status;
     }
 
     timer             = HAL_GetTick();
     uint8_t buffer[6] = {0};
-    while (MPU_6050_receive_gyroscope(buffer) != HAL_OK && Evita_travamento(timer)) {
-        ;
+    status            = MPU_6050_receive_gyroscope(buffer);
+    if (status != HAL_OK) {
+        return status;
     }
 
     gyroscope.x = calculate_gyroscope_gain((int16_t)(buffer[0] << 8 | buffer[1]))
