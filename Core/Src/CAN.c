@@ -7,7 +7,7 @@
 
 #include "CAN.h"
 
-static CAN_HandleTypeDef* can_ptr;
+extern CAN_HandleTypeDef hcan;
 
 static CAN_TxHeaderTypeDef TxHeader;
 
@@ -19,15 +19,14 @@ uint16_t concatenate_two_uint8_to_uint16(const uint8_t* data) {
 }
 
 // Initialize the inverter CAN. Called in initializer.c
-void CAN_initialize(CAN_HandleTypeDef* can_ref) {
-    can_ptr = can_ref;
+void CAN_initialize() {
     void CAN_receive_callback(CAN_HandleTypeDef*);
-    CAN_handler_initialize(can_ptr, CAN_receive_callback, &TxHeader);
+    CAN_handler_initialize(&hcan, CAN_receive_callback, &TxHeader);
 }
 
 // Function used to send a message via can
 void CAN_transmit(uint32_t id, uint16_t* data) {
-    CAN_handler_transmit(can_ptr, &TxHeader, id, data);
+    CAN_handler_transmit(&hcan, &TxHeader, id, data);
 }
 
 // Callback function called when any inverter message is received via CAN
