@@ -30,8 +30,8 @@ extern I2C_HandleTypeDef hi2c1;
 extern uint8_t _accel_ok;
 extern int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ, temp;
 void SetupACEL(void); // Funcao de inicializacao do MPU
-HAL_StatusTypeDef get_accelerometer_value(accelerometer_t accelerometer);
-HAL_StatusTypeDef get_gyroscope_value(gyroscope_t gyroscope);
+HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer);
+HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope);
 // void temperatura(void); //desnecessario
 uint8_t Evita_travamento(uint32_t timer);
 void Pisca_SOS();        // pisca o led de debug em caso de timeout do IMU

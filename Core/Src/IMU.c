@@ -70,7 +70,7 @@ int16_t calculate_accelerometer_gain(int16_t accelerometer_data) {
     return (int16_t)(accelerometer_data * ACCELEROMETER_GAIN);
 }
 
-HAL_StatusTypeDef get_accelerometer_value(accelerometer_t accelerometer) {
+HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer) {
     HAL_StatusTypeDef status;
     timer = HAL_GetTick();
     // Inicializa a comunicacao com o registrador do acelerometro
@@ -86,11 +86,11 @@ HAL_StatusTypeDef get_accelerometer_value(accelerometer_t accelerometer) {
         return status;
     }
 
-    accelerometer.x = calculate_accelerometer_gain((int16_t)(buffer[0] << 8 | buffer[1]))
+    accelerometer->x = calculate_accelerometer_gain((int16_t)(buffer[0] << 8 | buffer[1]))
                       + ACCELEROMETER_X_OFFSET;
-    accelerometer.y = calculate_accelerometer_gain((int16_t)(buffer[2] << 8 | buffer[3]))
+    accelerometer->y = calculate_accelerometer_gain((int16_t)(buffer[2] << 8 | buffer[3]))
                       + ACCELEROMETER_Y_OFFSET;
-    accelerometer.z = calculate_accelerometer_gain((int16_t)(buffer[4] << 8 | buffer[5]))
+    accelerometer->z = calculate_accelerometer_gain((int16_t)(buffer[4] << 8 | buffer[5]))
                       + ACCELEROMETER_Z_OFFSET;
 
     return HAL_OK;
@@ -100,7 +100,7 @@ int16_t calculate_gyroscope_gain(int16_t gyroscope_data) {
     return (int16_t)(gyroscope_data * GYROSCOPE_GAIN);
 }
 
-HAL_StatusTypeDef get_gyroscope_value(gyroscope_t gyroscope) {
+HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope) {
     HAL_StatusTypeDef status;
     timer  = HAL_GetTick();
     status = MPU_6050_request_gyroscope();
@@ -115,11 +115,11 @@ HAL_StatusTypeDef get_gyroscope_value(gyroscope_t gyroscope) {
         return status;
     }
 
-    gyroscope.x = calculate_gyroscope_gain((int16_t)(buffer[0] << 8 | buffer[1]))
+    gyroscope->x = calculate_gyroscope_gain((int16_t)(buffer[0] << 8 | buffer[1]))
                   + GYROSCOPE_X_OFFSET;
-    gyroscope.y = calculate_gyroscope_gain((int16_t)(buffer[2] << 8 | buffer[3]))
+    gyroscope->y = calculate_gyroscope_gain((int16_t)(buffer[2] << 8 | buffer[3]))
                   + GYROSCOPE_Y_OFFSET;
-    gyroscope.z = calculate_gyroscope_gain((int16_t)(buffer[4] << 8 | buffer[5]))
+    gyroscope->z = calculate_gyroscope_gain((int16_t)(buffer[4] << 8 | buffer[5]))
                   + GYROSCOPE_Z_OFFSET;
     return HAL_OK;
 }

@@ -16,6 +16,8 @@ static uint16_t gyroscope_transmit[4]     = {0, 0, 0, 0};
 void application_initializer() {
     HAL_Delay(500);
 
+    CAN_initialize();
+
     SetupACEL();
 }
 
@@ -23,26 +25,28 @@ void application_run() {
     accelerometer_t accelerometer = {0, 0, 0};
     gyroscope_t gyroscope         = {0, 0, 0};
 
-    if (get_accelerometer_value(accelerometer) == HAL_OK) {
+    if (get_accelerometer_value(&accelerometer) == HAL_OK) {
         accelerometer_transmit[X]      = accelerometer.x;
         accelerometer_transmit[Y]      = accelerometer.y;
         accelerometer_transmit[Z]      = accelerometer.z;
-        accelerometer_transmit[STATUS] = IMU_ERROR;
-    } else {
         accelerometer_transmit[STATUS] = IMU_OK;
+    } else {
+        accelerometer_transmit[STATUS] = IMU_ERROR;
     }
     // todo: colocar id certo e define
-    CAN_transmit(192, accelerometer_transmit);
+    CAN_transmit(130, accelerometer_transmit);
 
-    if (get_gyroscope_value(gyroscope) == HAL_OK) {
+    HAL_Delay(50);
+
+    if (get_gyroscope_value(&gyroscope) == HAL_OK) {
         gyroscope_transmit[X]          = gyroscope.x;
         gyroscope_transmit[Y]          = gyroscope.y;
         gyroscope_transmit[Z]          = gyroscope.z;
-        accelerometer_transmit[STATUS] = IMU_ERROR;
-    } else {
         gyroscope_transmit[STATUS] = IMU_OK;
+    } else {
+        gyroscope_transmit[STATUS] = IMU_ERROR;
     }
-    CAN_transmit(191, gyroscope_transmit);
+    CAN_transmit(131, gyroscope_transmit);
 
     HAL_Delay(50);
 
@@ -50,5 +54,6 @@ void application_run() {
         || gyroscope_transmit[STATUS] == IMU_ERROR) {
         // todo: refazer setup
         SetupACEL();
+        HAL_Delay(500);
     }
 }
