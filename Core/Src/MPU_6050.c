@@ -41,6 +41,6 @@ HAL_StatusTypeDef MPU_6050_send_command(uint8_t buffer) {
 }
 
 HAL_StatusTypeDef MPU_6050_read_data(uint8_t* buffer) {
-    return (HAL_I2C_Master_Transmit(&hi2c1, MPU_6050_I2C_ADDRESS, buffer,
+    return (HAL_I2C_Master_Receive(&hi2c1, MPU_6050_I2C_ADDRESS, buffer,
                                     RECEIVE_DATA_SIZE, DEFAULT_TIMEOUT));
 }
