@@ -14,7 +14,7 @@ extern HAL_StatusTypeDef MPU_6050_receive_accelerometer(int16_t* accelerometer);
 
 extern HAL_StatusTypeDef MPU_6050_receive_gyroscope(int16_t* gyroscope);
 
-extern HAL_StatusTypeDef MPU_6050_receive_temperature(uint16_t* temperature);
+extern HAL_StatusTypeDef MPU_6050_receive_temperature(int16_t* temperature);
 
 extern HAL_StatusTypeDef MPU_6050_request_temperature();
 

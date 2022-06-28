@@ -10,7 +10,7 @@
 
 #include "stm32f1xx_hal.h"
 
-void CAN_handler_initialize(CAN_HandleTypeDef* hcan,
+HAL_StatusTypeDef CAN_handler_initialize(CAN_HandleTypeDef* hcan,
                             void (*CAN_receive_callback)(CAN_HandleTypeDef* hcan),
                             CAN_TxHeaderTypeDef* TxHeader);
 

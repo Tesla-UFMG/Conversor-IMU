@@ -44,11 +44,11 @@ HAL_StatusTypeDef MPU_6050_receive_gyroscope(int16_t* gyroscope) {
     return status;
 }
 
-HAL_StatusTypeDef MPU_6050_receive_temperature(uint16_t* temperature) {
+HAL_StatusTypeDef MPU_6050_receive_temperature(int16_t* temperature) {
     uint8_t buffer[TEMPERATURE_DATA_SIZE];
     HAL_StatusTypeDef status = MPU_6050_read_data(buffer, TEMPERATURE_DATA_SIZE);
 
-    *temperature = (buffer[0] << 8 | buffer[1]);
+    *temperature = (int16_t)(buffer[0] << 8 | buffer[1]);
 
     return status;
 }

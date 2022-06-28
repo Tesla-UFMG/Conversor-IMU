@@ -10,9 +10,10 @@
 uint32_t TxMailbox;
 
 // Function to initialize CAN
-void CAN_handler_initialize(CAN_HandleTypeDef* hcan,
-                            void (*CAN_receive_callback)(CAN_HandleTypeDef* hcan),
-                            CAN_TxHeaderTypeDef* TxHeader) {
+HAL_StatusTypeDef
+CAN_handler_initialize(CAN_HandleTypeDef* hcan,
+                       void (*CAN_receive_callback)(CAN_HandleTypeDef* hcan),
+                       CAN_TxHeaderTypeDef* TxHeader) {
 
     if (HAL_CAN_ActivateNotification(hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK) {
         /* Notification Error */
@@ -53,6 +54,7 @@ void CAN_handler_initialize(CAN_HandleTypeDef* hcan,
     TxHeader->IDE                = CAN_ID_STD;
     TxHeader->DLC                = 8;
     TxHeader->TransmitGlobalTime = DISABLE;
+    return HAL_OK;
 }
 
 HAL_StatusTypeDef CAN_handler_transmit(CAN_HandleTypeDef* hcan,

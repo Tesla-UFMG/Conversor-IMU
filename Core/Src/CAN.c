@@ -19,9 +19,9 @@ uint16_t concatenate_two_uint8_to_uint16(const uint8_t* data) {
 }
 
 // Initialize the inverter CAN. Called in initializer.c
-void CAN_initialize() {
+HAL_StatusTypeDef CAN_initialize() {
     void CAN_receive_callback(CAN_HandleTypeDef*);
-    CAN_handler_initialize(&hcan, CAN_receive_callback, &TxHeader);
+    return CAN_handler_initialize(&hcan, CAN_receive_callback, &TxHeader);
 }
 
 // Function used to send a message via can

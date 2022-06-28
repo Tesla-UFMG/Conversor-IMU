@@ -23,7 +23,7 @@ uint8_t _accel_ok;
 
 uint32_t timer = 0, timer1;
 // uint16_t MemAdd = 0x6B;
-void SetupACEL(void) {
+HAL_StatusTypeDef SetupACEL(void) {
     _accel_ok         = 1;
     uint16_t MemAdd   = 0x6B;
     uint8_t buffer[1] = {0};
@@ -64,6 +64,7 @@ void SetupACEL(void) {
             != HAL_OK
         && Evita_travamento(timer))
         ;
+    return HAL_OK;
 }
 
 int16_t calculate_accelerometer_gain(int16_t accelerometer_data) {
@@ -113,20 +114,20 @@ HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope) {
     return HAL_OK;
 }
 
-HAL_StatusTypeDef get_temperature_value(uint16_t* temperature) {
+HAL_StatusTypeDef get_temperature_value(int16_t* temperature) {
     HAL_StatusTypeDef status;
     status = MPU_6050_request_temperature();
     if (status != HAL_OK) {
         return status;
     }
 
-    uint16_t buffer;
+    int16_t buffer;
     status = MPU_6050_receive_temperature(&buffer);
     if (status != HAL_OK) {
         return status;
     }
 
-    *temperature = ((int16_t)buffer / 34 + 365.3);
+    *temperature = (buffer / 34 + 365.3);
 
     return HAL_OK;
 }
