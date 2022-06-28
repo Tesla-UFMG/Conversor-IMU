@@ -8,16 +8,22 @@
 #ifndef INC_MPU_6050_H_
 #define INC_MPU_6050_H_
 
-HAL_StatusTypeDef MPU_6050_receive_accelerometer(uint8_t* accelerometer);
+#include "main.h"
 
-HAL_StatusTypeDef MPU_6050_receive_gyroscope(uint8_t* gyroscope);
+extern HAL_StatusTypeDef MPU_6050_receive_temperature(uint8_t* temperature);
 
-HAL_StatusTypeDef MPU_6050_request_accelerometer();
+extern HAL_StatusTypeDef MPU_6050_receive_accelerometer(uint8_t* accelerometer);
 
-HAL_StatusTypeDef MPU_6050_request_gyroscope();
+extern HAL_StatusTypeDef MPU_6050_receive_gyroscope(uint8_t* gyroscope);
 
-HAL_StatusTypeDef MPU_6050_send_command(uint8_t buffer);
+extern HAL_StatusTypeDef MPU_6050_request_temperature();
 
-HAL_StatusTypeDef MPU_6050_read_data(uint8_t* buffer);
+extern HAL_StatusTypeDef MPU_6050_request_accelerometer();
+
+extern HAL_StatusTypeDef MPU_6050_request_gyroscope();
+
+extern HAL_StatusTypeDef MPU_6050_send_command(uint8_t buffer);
+
+extern HAL_StatusTypeDef MPU_6050_read_data(uint8_t* buffer, uint16_t buffer_size);
 
 #endif /* INC_MPU_6050_H_ */

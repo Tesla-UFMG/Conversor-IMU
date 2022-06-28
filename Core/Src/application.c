@@ -25,11 +25,14 @@ void application_run() {
     accelerometer_t accelerometer = {0, 0, 0};
     gyroscope_t gyroscope         = {0, 0, 0};
 
+    uint16_t temperature;
+    get_temperature_value(&temperature);
+
     if (get_accelerometer_value(&accelerometer) == HAL_OK) {
         accelerometer_transmit[X]      = accelerometer.x;
         accelerometer_transmit[Y]      = accelerometer.y;
         accelerometer_transmit[Z]      = accelerometer.z;
-        accelerometer_transmit[STATUS] = IMU_OK;
+        accelerometer_transmit[STATUS] = temperature;
     } else {
         accelerometer_transmit[STATUS] = IMU_ERROR;
     }
@@ -39,9 +42,9 @@ void application_run() {
     HAL_Delay(50);
 
     if (get_gyroscope_value(&gyroscope) == HAL_OK) {
-        gyroscope_transmit[X]          = gyroscope.x;
-        gyroscope_transmit[Y]          = gyroscope.y;
-        gyroscope_transmit[Z]          = gyroscope.z;
+        gyroscope_transmit[X]      = gyroscope.x;
+        gyroscope_transmit[Y]      = gyroscope.y;
+        gyroscope_transmit[Z]      = gyroscope.z;
         gyroscope_transmit[STATUS] = IMU_OK;
     } else {
         gyroscope_transmit[STATUS] = IMU_ERROR;

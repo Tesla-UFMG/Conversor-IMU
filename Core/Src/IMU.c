@@ -72,26 +72,24 @@ int16_t calculate_accelerometer_gain(int16_t accelerometer_data) {
 
 HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer) {
     HAL_StatusTypeDef status;
-    timer = HAL_GetTick();
     // Inicializa a comunicacao com o registrador do acelerometro
     status = MPU_6050_request_accelerometer();
     if (status != HAL_OK) {
         return status;
     }
 
-    timer             = HAL_GetTick();
-    uint8_t buffer[6] = {0};
-    status            = MPU_6050_receive_accelerometer(buffer);
+    uint8_t buffer[6];
+    status = MPU_6050_receive_accelerometer(buffer);
     if (status != HAL_OK) {
         return status;
     }
 
     accelerometer->x = calculate_accelerometer_gain((int16_t)(buffer[0] << 8 | buffer[1]))
-                      + ACCELEROMETER_X_OFFSET;
+                       + ACCELEROMETER_X_OFFSET;
     accelerometer->y = calculate_accelerometer_gain((int16_t)(buffer[2] << 8 | buffer[3]))
-                      + ACCELEROMETER_Y_OFFSET;
+                       + ACCELEROMETER_Y_OFFSET;
     accelerometer->z = calculate_accelerometer_gain((int16_t)(buffer[4] << 8 | buffer[5]))
-                      + ACCELEROMETER_Z_OFFSET;
+                       + ACCELEROMETER_Z_OFFSET;
 
     return HAL_OK;
 }
@@ -102,41 +100,44 @@ int16_t calculate_gyroscope_gain(int16_t gyroscope_data) {
 
 HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope) {
     HAL_StatusTypeDef status;
-    timer  = HAL_GetTick();
     status = MPU_6050_request_gyroscope();
     if (status != HAL_OK) {
         return status;
     }
 
-    timer             = HAL_GetTick();
-    uint8_t buffer[6] = {0};
-    status            = MPU_6050_receive_gyroscope(buffer);
+    uint8_t buffer[6];
+    status = MPU_6050_receive_gyroscope(buffer);
     if (status != HAL_OK) {
         return status;
     }
 
     gyroscope->x = calculate_gyroscope_gain((int16_t)(buffer[0] << 8 | buffer[1]))
-                  + GYROSCOPE_X_OFFSET;
+                   + GYROSCOPE_X_OFFSET;
     gyroscope->y = calculate_gyroscope_gain((int16_t)(buffer[2] << 8 | buffer[3]))
-                  + GYROSCOPE_Y_OFFSET;
+                   + GYROSCOPE_Y_OFFSET;
     gyroscope->z = calculate_gyroscope_gain((int16_t)(buffer[4] << 8 | buffer[5]))
-                  + GYROSCOPE_Z_OFFSET;
+                   + GYROSCOPE_Z_OFFSET;
     return HAL_OK;
 }
 
-/*void temperatura(void) {
-        buffer[0] = 0x41;
-        timer = HAL_GetTick();
-        while (HAL_I2C_Master_Transmit(&hi2c1, (uint16_t) addressACEL << 1, buffer,
-                        1, 100) != HAL_OK && Evita_travamento(timer));
+HAL_StatusTypeDef get_temperature_value(int16_t* temperature) {
+    HAL_StatusTypeDef status;
+    status = MPU_6050_request_temperature();
+    if (status != HAL_OK) {
+        return status;
+    }
 
-        timer = HAL_GetTick();
-        while (HAL_I2C_Master_Receive(&hi2c1, (uint16_t) addressACEL << 1, buffer,
-                        2, 100) != HAL_OK && Evita_travamento(timer));
+    uint8_t buffer[2];
+    status = MPU_6050_receive_temperature(buffer);
+    if (status != HAL_OK) {
+        return status;
+    }
 
-        temp = (int16_t) (buffer[0] << 8 | buffer[1]);
-        temp = temp / 340 + (int16_t) 36.53;
-}*/
+    *temperature = (int16_t)(buffer[0] << 8 | buffer[1]);
+    *temperature = (int16_t)(*temperature / 34 + 365.3);
+    
+    return HAL_OK;
+}
 
 uint8_t Evita_travamento(uint32_t timer) { // verifica se houve timeout no i2c
     uint32_t timer2 = HAL_GetTick();
