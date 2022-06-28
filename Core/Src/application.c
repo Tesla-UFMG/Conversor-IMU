@@ -34,7 +34,7 @@ void application_state_machine(void) {
             break;
         }
         case INIT_IMU: {
-            if (SetupACEL() == HAL_OK) {
+            if (IMU_initialize() == HAL_OK) {
                 state = RUNNING;
             }
             break;
