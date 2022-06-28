@@ -72,24 +72,20 @@ int16_t calculate_accelerometer_gain(int16_t accelerometer_data) {
 
 HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer) {
     HAL_StatusTypeDef status;
-    // Inicializa a comunicacao com o registrador do acelerometro
     status = MPU_6050_request_accelerometer();
     if (status != HAL_OK) {
         return status;
     }
 
-    uint8_t buffer[6];
+    int16_t buffer[3];
     status = MPU_6050_receive_accelerometer(buffer);
     if (status != HAL_OK) {
         return status;
     }
 
-    accelerometer->x = calculate_accelerometer_gain((int16_t)(buffer[0] << 8 | buffer[1]))
-                       + ACCELEROMETER_X_OFFSET;
-    accelerometer->y = calculate_accelerometer_gain((int16_t)(buffer[2] << 8 | buffer[3]))
-                       + ACCELEROMETER_Y_OFFSET;
-    accelerometer->z = calculate_accelerometer_gain((int16_t)(buffer[4] << 8 | buffer[5]))
-                       + ACCELEROMETER_Z_OFFSET;
+    accelerometer->x = calculate_accelerometer_gain(buffer[0]) + ACCELEROMETER_X_OFFSET;
+    accelerometer->y = calculate_accelerometer_gain(buffer[1]) + ACCELEROMETER_Y_OFFSET;
+    accelerometer->z = calculate_accelerometer_gain(buffer[2]) + ACCELEROMETER_Z_OFFSET;
 
     return HAL_OK;
 }
@@ -105,37 +101,33 @@ HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope) {
         return status;
     }
 
-    uint8_t buffer[6];
+    int16_t buffer[3];
     status = MPU_6050_receive_gyroscope(buffer);
     if (status != HAL_OK) {
         return status;
     }
 
-    gyroscope->x = calculate_gyroscope_gain((int16_t)(buffer[0] << 8 | buffer[1]))
-                   + GYROSCOPE_X_OFFSET;
-    gyroscope->y = calculate_gyroscope_gain((int16_t)(buffer[2] << 8 | buffer[3]))
-                   + GYROSCOPE_Y_OFFSET;
-    gyroscope->z = calculate_gyroscope_gain((int16_t)(buffer[4] << 8 | buffer[5]))
-                   + GYROSCOPE_Z_OFFSET;
+    gyroscope->x = calculate_gyroscope_gain(buffer[0]) + GYROSCOPE_X_OFFSET;
+    gyroscope->y = calculate_gyroscope_gain(buffer[1]) + GYROSCOPE_Y_OFFSET;
+    gyroscope->z = calculate_gyroscope_gain(buffer[2]) + GYROSCOPE_Z_OFFSET;
     return HAL_OK;
 }
 
-HAL_StatusTypeDef get_temperature_value(int16_t* temperature) {
+HAL_StatusTypeDef get_temperature_value(uint16_t* temperature) {
     HAL_StatusTypeDef status;
     status = MPU_6050_request_temperature();
     if (status != HAL_OK) {
         return status;
     }
 
-    uint8_t buffer[2];
-    status = MPU_6050_receive_temperature(buffer);
+    uint16_t buffer;
+    status = MPU_6050_receive_temperature(&buffer);
     if (status != HAL_OK) {
         return status;
     }
 
-    *temperature = (int16_t)(buffer[0] << 8 | buffer[1]);
-    *temperature = (int16_t)(*temperature / 34 + 365.3);
-    
+    *temperature = ((int16_t)buffer / 34 + 365.3);
+
     return HAL_OK;
 }
 

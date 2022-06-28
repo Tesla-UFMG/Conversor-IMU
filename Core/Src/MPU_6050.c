@@ -9,10 +9,12 @@
 
 #include "stm32f1xx_hal.h"
 
-#define MPU_6050_I2C_ADDRESS (0x68 << 1)
-#define DEFAULT_TIMEOUT      (100)
-#define SEND_COMMAND_SIZE    (1)
-#define RECEIVE_DATA_SIZE    (6)
+#define MPU_6050_I2C_ADDRESS    (0x68 << 1)
+#define DEFAULT_TIMEOUT         (100)
+#define SEND_COMMAND_SIZE       (1)
+#define ACCELEROMETER_DATA_SIZE (6)
+#define GYROSCOPE_DATA_SIZE     (6)
+#define TEMPERATURE_DATA_SIZE   (2)
 
 #define MPU_6050_READ_GYROSCOPE_REGISTER     0x43
 #define MPU_6050_READ_ACCELEROMETER_REGISTER 0x3B
@@ -20,16 +22,35 @@
 
 extern I2C_HandleTypeDef hi2c1;
 
-HAL_StatusTypeDef MPU_6050_receive_temperature(uint8_t* temperature) {
-    return MPU_6050_read_data(temperature, 2);
+HAL_StatusTypeDef MPU_6050_receive_accelerometer(int16_t* accelerometer) {
+    uint8_t buffer[ACCELEROMETER_DATA_SIZE];
+    HAL_StatusTypeDef status = MPU_6050_read_data(buffer, ACCELEROMETER_DATA_SIZE);
+
+    accelerometer[0] = (buffer[0] << 8 | buffer[1]);
+    accelerometer[1] = (buffer[2] << 8 | buffer[3]);
+    accelerometer[2] = (buffer[4] << 8 | buffer[5]);
+
+    return status;
 }
 
-HAL_StatusTypeDef MPU_6050_receive_accelerometer(uint8_t* accelerometer) {
-    return MPU_6050_read_data(accelerometer, 6);
+HAL_StatusTypeDef MPU_6050_receive_gyroscope(int16_t* gyroscope) {
+    uint8_t buffer[GYROSCOPE_DATA_SIZE];
+    HAL_StatusTypeDef status = MPU_6050_read_data(buffer, GYROSCOPE_DATA_SIZE);
+
+    gyroscope[0] = (int16_t)(buffer[0] << 8 | buffer[1]);
+    gyroscope[1] = (int16_t)(buffer[2] << 8 | buffer[3]);
+    gyroscope[2] = (int16_t)(buffer[4] << 8 | buffer[5]);
+
+    return status;
 }
 
-HAL_StatusTypeDef MPU_6050_receive_gyroscope(uint8_t* gyroscope) {
-    return MPU_6050_read_data(gyroscope, 6);
+HAL_StatusTypeDef MPU_6050_receive_temperature(uint16_t* temperature) {
+    uint8_t buffer[TEMPERATURE_DATA_SIZE];
+    HAL_StatusTypeDef status = MPU_6050_read_data(buffer, TEMPERATURE_DATA_SIZE);
+
+    *temperature = (buffer[0] << 8 | buffer[1]);
+
+    return status;
 }
 
 HAL_StatusTypeDef MPU_6050_request_temperature() {

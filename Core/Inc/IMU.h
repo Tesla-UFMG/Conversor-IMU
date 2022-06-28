@@ -27,7 +27,7 @@ typedef struct {
 
 extern I2C_HandleTypeDef hi2c1;
 
-HAL_StatusTypeDef get_temperature_value(int16_t* temperature);
+HAL_StatusTypeDef get_temperature_value(uint16_t* temperature);
 extern uint8_t _accel_ok;
 extern int16_t gyroX, gyroY, gyroZ, accelX, accelY, accelZ, temp;
 void SetupACEL(void); // Funcao de inicializacao do MPU

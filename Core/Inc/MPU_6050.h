@@ -10,11 +10,11 @@
 
 #include "main.h"
 
-extern HAL_StatusTypeDef MPU_6050_receive_temperature(uint8_t* temperature);
+extern HAL_StatusTypeDef MPU_6050_receive_accelerometer(int16_t* accelerometer);
 
-extern HAL_StatusTypeDef MPU_6050_receive_accelerometer(uint8_t* accelerometer);
+extern HAL_StatusTypeDef MPU_6050_receive_gyroscope(int16_t* gyroscope);
 
-extern HAL_StatusTypeDef MPU_6050_receive_gyroscope(uint8_t* gyroscope);
+extern HAL_StatusTypeDef MPU_6050_receive_temperature(uint16_t* temperature);
 
 extern HAL_StatusTypeDef MPU_6050_request_temperature();
 
