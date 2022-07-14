@@ -36,7 +36,7 @@ void CAN_receive_callback(CAN_HandleTypeDef* hcan) {
         // Error_Handler();
     }
 
-    uint32_t id = RxHeader.StdId;
+    const uint32_t id = RxHeader.StdId;
     for (int i = 0; i < 4; ++i) {
         uint16_t data = concatenate_two_uint8_to_uint16(rx_data + i * 2);
     }
