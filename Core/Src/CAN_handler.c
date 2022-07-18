@@ -15,6 +15,11 @@ CAN_handler_initialize(CAN_HandleTypeDef* hcan,
     HAL_StatusTypeDef status;
     CAN_FilterTypeDef canfilterconfig;
 
+    status = HAL_CAN_Init(hcan);
+    if (status != HAL_OK) {
+        return status;
+    }
+
     status = HAL_CAN_ActivateNotification(hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
     if (status != HAL_OK) {
         return status;
@@ -55,6 +60,10 @@ CAN_handler_initialize(CAN_HandleTypeDef* hcan,
     TxHeader->DLC                = 8;
     TxHeader->TransmitGlobalTime = DISABLE;
     return HAL_OK;
+}
+
+HAL_StatusTypeDef CAN_handler_deinitialize(CAN_HandleTypeDef* hcan) {
+    return HAL_CAN_DeInit(hcan);
 }
 
 HAL_StatusTypeDef CAN_handler_transmit(CAN_HandleTypeDef* hcan,

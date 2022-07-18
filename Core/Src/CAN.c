@@ -23,10 +23,13 @@ HAL_StatusTypeDef CAN_initialize() {
     void CAN_receive_callback(CAN_HandleTypeDef*);
     return CAN_handler_initialize(&hcan, CAN_receive_callback, &TxHeader);
 }
+HAL_StatusTypeDef CAN_deinitialize() {
+    return CAN_handler_deinitialize(&hcan);
+}
 
 // Function used to send a message via can
-void CAN_transmit(uint32_t id, uint16_t* data) {
-    CAN_handler_transmit(&hcan, &TxHeader, id, data);
+HAL_StatusTypeDef CAN_transmit(uint32_t id, uint16_t* data) {
+    return CAN_handler_transmit(&hcan, &TxHeader, id, data);
 }
 
 // Callback function called when any inverter message is received via CAN

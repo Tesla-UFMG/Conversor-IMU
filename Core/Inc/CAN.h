@@ -11,7 +11,8 @@
 #include "CAN_Handler.h"
 
 HAL_StatusTypeDef CAN_initialize();
-void CAN_transmit(uint32_t id, uint16_t* data);
+HAL_StatusTypeDef CAN_deinitialize();
+HAL_StatusTypeDef CAN_transmit(uint32_t id, uint16_t* data);
 void CAN_receive_callback(CAN_HandleTypeDef* hcan);
 
 #endif /* INC_CAN_H_ */
