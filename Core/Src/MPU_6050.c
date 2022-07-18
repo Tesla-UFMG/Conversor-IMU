@@ -86,20 +86,20 @@ HAL_StatusTypeDef MPU_6050_set_accelerometer_scale(MPU_6050_accelerometer_scale_
     switch (scale) {
         // Values obtained from MPU-6050 register map:
         case ACCELEROMETER_SCALE_16G: {
-            accelerometer_gain = 2048.f;
+            accelerometer_gain = 2.048f;
             break;
         }
         case ACCELEROMETER_SCALE_8G: {
-            accelerometer_gain = 4096.f;
+            accelerometer_gain = 4.096f;
             break;
         }
         case ACCELEROMETER_SCALE_4G: {
-            accelerometer_gain = 8192.f;
+            accelerometer_gain = 8.192f;
             break;
         }
         case ACCELEROMETER_SCALE_2G:
         default: {
-            accelerometer_gain = 16384.f;
+            accelerometer_gain = 16.384f;
             break;
         }
     }
