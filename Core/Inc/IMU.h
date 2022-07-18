@@ -13,6 +13,8 @@
 
 HAL_StatusTypeDef IMU_initialize(void);
 
+HAL_StatusTypeDef IMU_deinitialize(void);
+
 HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer);
 
 HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope);

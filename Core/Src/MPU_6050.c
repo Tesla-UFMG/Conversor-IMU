@@ -15,21 +15,21 @@ static HAL_StatusTypeDef MPU_6050_send_command(uint8_t buffer);
 
 static HAL_StatusTypeDef MPU_6050_write_memory(uint16_t memory_address, uint8_t* p_data);
 
-#define MPU_6050_I2C_ADDRESS    (0x68 << 1)
+#define MPU_6050_I2C_ADDRESS    (104 << 1)
 #define DEFAULT_TIMEOUT         10
 #define SEND_COMMAND_SIZE       1
 #define ACCELEROMETER_DATA_SIZE 6
 #define GYROSCOPE_DATA_SIZE     6
 #define TEMPERATURE_DATA_SIZE   2
 
-#define MPU_6050_CONFIG_REGISTER              0x1A
-#define MPU_6050_ACCELEROMETER_SCALE_REGISTER 0x1C
-#define MPU_6050_GYROSCOPE_SCALE_REGISTER     0x1B
-#define MPU_6050_POWER_REGISTER               0x6B
+#define MPU_6050_CONFIG_REGISTER              26
+#define MPU_6050_ACCELEROMETER_SCALE_REGISTER 28
+#define MPU_6050_GYROSCOPE_SCALE_REGISTER     27
+#define MPU_6050_POWER_REGISTER               107
 
-#define MPU_6050_ACCELEROMETER_REGISTER 0x3B
-#define MPU_6050_GYROSCOPE_REGISTER     0x43
-#define MPU_6050_TEMPERATURE_REGISTER   0x41
+#define MPU_6050_ACCELEROMETER_REGISTER 59
+#define MPU_6050_GYROSCOPE_REGISTER     67
+#define MPU_6050_TEMPERATURE_REGISTER   65
 
 /**
  * @brief Values provided at MPU6050 documentation
@@ -42,6 +42,13 @@ extern I2C_HandleTypeDef hi2c1;
 
 static float accelerometer_gain = 1;
 static float gyroscope_gain     = 1;
+
+HAL_StatusTypeDef MPU_6050_initialize(void) {
+    return HAL_I2C_Init(&hi2c1);
+}
+HAL_StatusTypeDef MPU_6050_deinitialize(void) {
+    return HAL_I2C_DeInit(&hi2c1);
+}
 
 HAL_StatusTypeDef MPU_6050_receive_accelerometer(accelerometer_t* p_accelerometer) {
     int16_t accelerometer_raw[3];

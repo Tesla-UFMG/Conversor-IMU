@@ -21,11 +21,11 @@
  * @return true The desired time has elapsed.
  * @return false The desired time has not been elapsed.
  */
-bool timer_wait(uint32_t timer_start, uint32_t delay);
+bool timer_wait_ms(uint32_t timer_start, uint32_t delay);
 /**
  * @brief Restart timer to current tick value.
  *
- * @param timer_to_restart
+ * @param timer_to_restart Address of timer specifier.
  */
 void timer_restart(uint32_t* timer_to_restart);
 

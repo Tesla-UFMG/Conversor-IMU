@@ -18,6 +18,11 @@
 HAL_StatusTypeDef IMU_initialize(void) {
     HAL_StatusTypeDef status;
 
+    status = MPU_6050_initialize();
+    if (status != HAL_OK) {
+        return status;
+    }
+
     status = MPU_6050_disable_sleep();
     if (status != HAL_OK) {
         return status;
@@ -39,6 +44,10 @@ HAL_StatusTypeDef IMU_initialize(void) {
     }
 
     return HAL_OK;
+}
+
+HAL_StatusTypeDef IMU_deinitialize(void) {
+    return MPU_6050_deinitialize();
 }
 
 HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer) {

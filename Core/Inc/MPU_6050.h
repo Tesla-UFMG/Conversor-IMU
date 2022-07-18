@@ -46,6 +46,10 @@ typedef struct {
     int16_t z;
 } gyroscope_t;
 
+extern HAL_StatusTypeDef MPU_6050_initialize(void);
+
+extern HAL_StatusTypeDef MPU_6050_deinitialize(void);
+
 extern HAL_StatusTypeDef MPU_6050_receive_accelerometer(accelerometer_t* accelerometer);
 
 extern HAL_StatusTypeDef MPU_6050_receive_gyroscope(gyroscope_t* p_gyroscope);
@@ -58,9 +62,10 @@ extern HAL_StatusTypeDef MPU_6050_request_accelerometer();
 
 extern HAL_StatusTypeDef MPU_6050_request_gyroscope();
 
-HAL_StatusTypeDef MPU_6050_set_accelerometer_scale(MPU_6050_accelerometer_scale_e scale);
+extern HAL_StatusTypeDef
+MPU_6050_set_accelerometer_scale(MPU_6050_accelerometer_scale_e scale);
 
-HAL_StatusTypeDef MPU_6050_set_gyroscope_scale(MPU_6050_gyroscope_scale_e scale);
+extern HAL_StatusTypeDef MPU_6050_set_gyroscope_scale(MPU_6050_gyroscope_scale_e scale);
 
 extern HAL_StatusTypeDef MPU_6050_set_filter(MPU_6050_filters_e filter);
 
