@@ -11,6 +11,8 @@
 #include "IMU.h"
 #include "timer_handler.h"
 
+static void application_state_machine(void);
+
 static state_e state;
 
 static accelerometer_t accelerometer = {.x = 0, .y = 0, .z = 0};
@@ -25,7 +27,7 @@ void application_run() {
     application_state_machine();
 }
 
-void application_state_machine(void) {
+static void application_state_machine(void) {
     switch (state) {
         case INIT_CAN: {
             if (CAN_initialize() == HAL_OK) {
