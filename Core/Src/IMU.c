@@ -7,8 +7,6 @@
 
 #include "IMU.h"
 
-#include "MPU_6050.h"
-
 static int16_t calculate_accelerometer_gain(int16_t accelerometer_data);
 
 static int16_t calculate_gyroscope_gain(int16_t gyroscope_data);
@@ -43,6 +41,16 @@ HAL_StatusTypeDef IMU_initialize(void) {
         return status;
     }
 
+    status = MPU_6050_set_accelerometer_scale(ACCELEROMETER_SCALE_2G);
+    if (status != HAL_OK) {
+        return status;
+    }
+
+    status = MPU_6050_set_gyroscope_scale(GYROSCOPE_SCALE_250);
+    if (status != HAL_OK) {
+        return status;
+    }
+
     return HAL_OK;
 }
 
@@ -54,14 +62,10 @@ HAL_StatusTypeDef get_accelerometer_value(accelerometer_t* accelerometer) {
     }
 
     int16_t buffer[3];
-    status = MPU_6050_receive_accelerometer(buffer);
+    status = MPU_6050_receive_accelerometer(accelerometer);
     if (status != HAL_OK) {
         return status;
     }
-
-    accelerometer->x = calculate_accelerometer_gain(buffer[0]) + ACCELEROMETER_X_OFFSET;
-    accelerometer->y = calculate_accelerometer_gain(buffer[1]) + ACCELEROMETER_Y_OFFSET;
-    accelerometer->z = calculate_accelerometer_gain(buffer[2]) + ACCELEROMETER_Z_OFFSET;
 
     return HAL_OK;
 }
@@ -74,14 +78,11 @@ HAL_StatusTypeDef get_gyroscope_value(gyroscope_t* gyroscope) {
     }
 
     int16_t buffer[3];
-    status = MPU_6050_receive_gyroscope(buffer);
+    status = MPU_6050_receive_gyroscope(gyroscope);
     if (status != HAL_OK) {
         return status;
     }
 
-    gyroscope->x = calculate_gyroscope_gain(buffer[0]) + GYROSCOPE_X_OFFSET;
-    gyroscope->y = calculate_gyroscope_gain(buffer[1]) + GYROSCOPE_Y_OFFSET;
-    gyroscope->z = calculate_gyroscope_gain(buffer[2]) + GYROSCOPE_Z_OFFSET;
     return HAL_OK;
 }
 
@@ -92,13 +93,13 @@ HAL_StatusTypeDef get_temperature_value(int16_t* temperature) {
         return status;
     }
 
-    int16_t buffer;
-    status = MPU_6050_receive_temperature(&buffer);
+    int16_t buffer[1];
+    status = MPU_6050_receive_temperature(buffer);
     if (status != HAL_OK) {
         return status;
     }
 
-    *temperature = (buffer / 34 + 365.3);
+    *temperature = (buffer[0] / 34 + 365.3);
 
     return HAL_OK;
 }

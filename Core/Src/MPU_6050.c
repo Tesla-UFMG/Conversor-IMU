@@ -22,21 +22,48 @@ static HAL_StatusTypeDef MPU_6050_write_memory(uint16_t memory_address, uint8_t*
 #define GYROSCOPE_DATA_SIZE     6
 #define TEMPERATURE_DATA_SIZE   2
 
-#define MPU_6050_CONFIG_REGISTER 26
-#define MPU_6050_POWER_REGISTER  107
+#define MPU_6050_CONFIG_REGISTER              0x1A
+#define MPU_6050_ACCELEROMETER_SCALE_REGISTER 0x1C
+#define MPU_6050_GYROSCOPE_SCALE_REGISTER     0x1B
+#define MPU_6050_POWER_REGISTER               0x6B
 
-#define MPU_6050_GYROSCOPE_REGISTER     67
-#define MPU_6050_ACCELEROMETER_REGISTER 59
-#define MPU_6050_TEMPERATURE_REGISTER   65
+#define MPU_6050_ACCELEROMETER_REGISTER 0x3B
+#define MPU_6050_GYROSCOPE_REGISTER     0x43
+#define MPU_6050_TEMPERATURE_REGISTER   0x41
 
 extern I2C_HandleTypeDef hi2c1;
 
-HAL_StatusTypeDef MPU_6050_receive_accelerometer(int16_t* p_accelerometer) {
-    return MPU_6050_read_measurement(p_accelerometer, ACCELEROMETER_DATA_SIZE);
+static float accelerometer_gain = 1;
+static float gyroscope_gain     = 1;
+
+HAL_StatusTypeDef MPU_6050_receive_accelerometer(accelerometer_t* p_accelerometer) {
+    int16_t accelerometer_raw[3];
+
+    HAL_StatusTypeDef status =
+        MPU_6050_read_measurement(accelerometer_raw, ACCELEROMETER_DATA_SIZE);
+    if (status != HAL_OK) {
+        return status;
+    }
+
+        p_accelerometer->x = (int16_t)accelerometer_raw[0] / accelerometer_gain;
+        p_accelerometer->y = (int16_t)accelerometer_raw[1] / accelerometer_gain;
+        p_accelerometer->z = (int16_t)accelerometer_raw[2] / accelerometer_gain;
+    return HAL_OK;
 }
 
-HAL_StatusTypeDef MPU_6050_receive_gyroscope(int16_t* p_gyroscope) {
-    return MPU_6050_read_measurement(p_gyroscope, GYROSCOPE_DATA_SIZE);
+HAL_StatusTypeDef MPU_6050_receive_gyroscope(gyroscope_t* p_gyroscope) {
+    int16_t gyroscope_raw[3];
+
+    HAL_StatusTypeDef status =
+        MPU_6050_read_measurement(gyroscope_raw, GYROSCOPE_DATA_SIZE);
+    if (status != HAL_OK) {
+        return status;
+    }
+        p_gyroscope->x = (int16_t)gyroscope_raw[0] / gyroscope_gain;
+        p_gyroscope->y = (int16_t)gyroscope_raw[1] / gyroscope_gain;
+        p_gyroscope->z = (int16_t)gyroscope_raw[2] / gyroscope_gain;
+
+    return HAL_OK;
 }
 
 HAL_StatusTypeDef MPU_6050_receive_temperature(int16_t* p_temperature) {
@@ -55,6 +82,56 @@ HAL_StatusTypeDef MPU_6050_request_gyroscope() {
     return MPU_6050_send_command(MPU_6050_GYROSCOPE_REGISTER);
 }
 
+HAL_StatusTypeDef MPU_6050_set_accelerometer_scale(MPU_6050_accelerometer_scale_e scale) {
+    switch (scale) {
+        // Values obtained from MPU-6050 register map:
+        case ACCELEROMETER_SCALE_16G: {
+            accelerometer_gain = 2048.f;
+            break;
+        }
+        case ACCELEROMETER_SCALE_8G: {
+            accelerometer_gain = 4096.f;
+            break;
+        }
+        case ACCELEROMETER_SCALE_4G: {
+            accelerometer_gain = 8192.f;
+            break;
+        }
+        case ACCELEROMETER_SCALE_2G:
+        default: {
+            accelerometer_gain = 16384.f;
+            break;
+        }
+    }
+    scale = scale >> 3;
+    return MPU_6050_write_memory(MPU_6050_ACCELEROMETER_SCALE_REGISTER, &scale);
+}
+
+HAL_StatusTypeDef MPU_6050_set_gyroscope_scale(MPU_6050_gyroscope_scale_e scale) {
+    switch (scale) {
+        // Values obtained from MPU-6050 register map:
+        case GYROSCOPE_SCALE_2000: {
+            gyroscope_gain = 16.4;
+            break;
+        }
+        case GYROSCOPE_SCALE_1000: {
+            gyroscope_gain = 32.8;
+            break;
+        }
+        case GYROSCOPE_SCALE_500: {
+            gyroscope_gain = 65.5;
+            break;
+        }
+        case GYROSCOPE_SCALE_250:
+        default: {
+            gyroscope_gain = 131;
+            break;
+        }
+    }
+    scale = scale >> 3;
+    return MPU_6050_write_memory(MPU_6050_GYROSCOPE_SCALE_REGISTER, &scale);
+}
+
 HAL_StatusTypeDef MPU_6050_set_filter(MPU_6050_filters_e filter) {
     return MPU_6050_write_memory(MPU_6050_CONFIG_REGISTER, &filter);
 }
@@ -71,7 +148,7 @@ static HAL_StatusTypeDef MPU_6050_read_measurement(int16_t* p_data, uint8_t size
         return status;
     }
 
-    for (uint8_t i = 0; i > size; ++i) {
+    for (uint8_t i = 0; i < size/2; ++i) {
         p_data[i] = (int16_t)(buffer[i * 2] << 8 | buffer[i * 2 + 1]);
     }
 

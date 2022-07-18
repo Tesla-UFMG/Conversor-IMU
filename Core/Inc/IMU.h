@@ -8,19 +8,8 @@
 #ifndef INC_IMU_H_
 #define INC_IMU_H_
 
+#include "MPU_6050.h"
 #include "stm32f1xx_hal.h"
-
-typedef struct {
-    int16_t x;
-    int16_t y;
-    int16_t z;
-} accelerometer_t;
-
-typedef struct {
-    int16_t x;
-    int16_t y;
-    int16_t z;
-} gyroscope_t;
 
 HAL_StatusTypeDef IMU_initialize(void);
 
