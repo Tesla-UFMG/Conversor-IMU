@@ -71,7 +71,7 @@ static void application_state_machine(void) {
                 accelerometer_transmit[2] = accelerometer.z;
                 accelerometer_transmit[3] = temperature;
 
-                if (CAN_transmit(130, accelerometer_transmit) != HAL_OK) {
+                if (CAN_transmit(291, accelerometer_transmit) != HAL_OK) {
                     application_state = ERROR_IMU;
                     return;
                 }
@@ -91,11 +91,10 @@ static void application_state_machine(void) {
                 gyroscope_transmit[WORD_2] = gyroscope.z;
                 gyroscope_transmit[WORD_3] = IMU_OK;
 
-                if (CAN_transmit(131, gyroscope_transmit) != HAL_OK) {
+                if (CAN_transmit(292, gyroscope_transmit) != HAL_OK) {
                     application_state = ERROR_IMU;
                     return;
                 }
-                CAN_transmit(131, gyroscope_transmit);
                 timer_restart(&gyroscope_timer);
             }
 
@@ -109,7 +108,7 @@ static void application_state_machine(void) {
             error_transmit[WORD_2] = 0;
             error_transmit[WORD_3] = IMU_ERROR;
 
-            CAN_transmit(131, error_transmit);
+            CAN_transmit(292, error_transmit);
 
             IMU_deinitialize();
             CAN_deinitialize();
