@@ -12,6 +12,8 @@
 #include "main.h"
 #include "timer_handler.h"
 
+#define TRANSMIT_OFFSET 10000
+
 static void application_state_machine(void);
 static void led_state_machine(void);
 
@@ -66,9 +68,9 @@ static void application_state_machine(void) {
                 }
 
                 uint16_t accelerometer_transmit[4];
-                accelerometer_transmit[0] = accelerometer.x;
-                accelerometer_transmit[1] = accelerometer.y;
-                accelerometer_transmit[2] = accelerometer.z;
+                accelerometer_transmit[0] = accelerometer.x + TRANSMIT_OFFSET;
+                accelerometer_transmit[1] = accelerometer.y + TRANSMIT_OFFSET;
+                accelerometer_transmit[2] = accelerometer.z + TRANSMIT_OFFSET;
                 accelerometer_transmit[3] = temperature;
 
                 if (CAN_transmit(291, accelerometer_transmit) != HAL_OK) {
@@ -86,9 +88,9 @@ static void application_state_machine(void) {
                 }
 
                 uint16_t gyroscope_transmit[4];
-                gyroscope_transmit[WORD_0] = gyroscope.x;
-                gyroscope_transmit[WORD_1] = gyroscope.y;
-                gyroscope_transmit[WORD_2] = gyroscope.z;
+                gyroscope_transmit[WORD_0] = gyroscope.x + TRANSMIT_OFFSET;
+                gyroscope_transmit[WORD_1] = gyroscope.y + TRANSMIT_OFFSET;
+                gyroscope_transmit[WORD_2] = gyroscope.z + TRANSMIT_OFFSET;
                 gyroscope_transmit[WORD_3] = IMU_OK;
 
                 if (CAN_transmit(292, gyroscope_transmit) != HAL_OK) {
